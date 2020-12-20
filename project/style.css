@@ -1,21 +1,22 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: black;
-    margin: 0;
 }
 
-h1 {
+#perm-title {
+    margin: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color: white;
 }
 
-#canvas-container {
-    background-color: grey;
-    border: solid grey 5px;
-    overflow: hidden;
-    position: relative;
+main {
     /*
         16:9 ratio
         84 * 16 / 9 = 149.33
@@ -25,15 +26,93 @@ h1 {
     width: 95%;
 }
 
-#canvas {
+
+#menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#menu-title {
+    margin: 20px 0;
+    width: 90%;
+    text-align: center;
+    font-size: min(1000%, 15vw, 25vh);
+    white-space: nowrap;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: rgb(194, 195, 196);
+    -webkit-background-clip: text;
+    background-clip: text;   
+    background-image: linear-gradient(to bottom, rgb(212, 13, 43), rgb(212, 13, 43), rgb(52, 41, 125), rgb(52, 41, 125));
+    color: transparent;
+}
+
+#menu-credits {
+    margin-bottom: 80px;
+    font-weight: 1000;
+}
+
+button {
+    margin: 20px;
+    padding: 10px;
+    font-size: 200%;
+}
+
+
+#canvas-container {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: grey;
+    border: solid grey 5px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#canvas { 
     background-color:white;
-    border: solid red 5px;  
+    /* border: solid red 5px; */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#text-on-screen {
+    position: absolute;
+    text-align: center;
+    color: rgb(255, 255, 190);
+    font-size: min(500%, 10vw, 15vh);
+    font-weight: bold;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+}
+
+#lap-stats {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.5vw;
+    font-family: monospace;
+    color: white;
+}
+
+#lap-stats * {
+    margin: 5px;
 }
 
 #speed-indicator {
     position: absolute;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     margin: 5px;
     right: 0;
     bottom: 0;
+    color: white;
 }

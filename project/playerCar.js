@@ -1,9 +1,10 @@
 class PlayerCar {
-    constructor(context, map, x, y, image) {
+    constructor(context, map, x, y, imgSrc) {
         // Constants
             this.context = context;
             this.map = map;
-            this.image = image;
+            this.image = new Image();
+            this.image.src = imgSrc;
             
             this.WIDTH = 15;
             this.LENGTH = 30;
@@ -44,20 +45,25 @@ class PlayerCar {
             this.xSize;
             this.ySize;
 
+            // For checkpoints
+            this.nextCheckpoint;
+
+            // For controls
+            this.canMove = false;
             this.goingForward = false;
             this.turningLeft = false;
-            this.turningRight = false;
+            this.turningRight = false;         
     }
 
     draw() {
-        this.context.save();
-
-        this.context.translate(this.x, this.y);
-        this.context.rotate(this.rotation * Math.PI / 180);
-        this.context.translate(-this.x, -this.y);
-        this.context.drawImage(this.image, this.x - (this.WIDTH / 2), this.y - (this.LENGTH / 2), this.WIDTH, this.LENGTH);
-
-        this.context.restore();
+        if (this.image.complete) {
+            this.context.save();
+            this.context.translate(this.x, this.y);
+            this.context.rotate(this.rotation * Math.PI / 180);
+            this.context.translate(-this.x, -this.y);
+            this.context.drawImage(this.image, this.x - (this.WIDTH / 2), this.y - (this.LENGTH / 2), this.WIDTH, this.LENGTH);
+            this.context.restore();
+        }
     }
 
     update() {
@@ -68,15 +74,16 @@ class PlayerCar {
         this.updatePosition();
         this.checkWalls();
         this.checkMapEdges();
+        this.updateVroom();
         this.draw();
     }
 
     updateRotation() {
         if (this.turningLeft) {
-            this.rotation -= this.ROTATION_RATE * this.surfaceSpeedFactor;
+            this.rotation -= this.ROTATION_RATE * (1 / this.surfaceSpeedFactor);
         }
         if (this.turningRight) {
-            this.rotation += this.ROTATION_RATE * this.surfaceSpeedFactor;            
+            this.rotation += this.ROTATION_RATE * (1 / this.surfaceSpeedFactor);            
         }
     }
 
@@ -108,6 +115,7 @@ class PlayerCar {
                 this.acceleration = 0;
             }
         }
+        this.acceleration *= this.surfaceSpeedFactor;
     }
 
     updateSpeed() {
@@ -184,6 +192,12 @@ class PlayerCar {
     speedToKMH() {
         return (Math.round(this.speed * this.SPEED_UNIT_IN_KMH * 100) / 100).toFixed(1);
     }
+
+
+    reachedCheckpoint() {
+        return this.nextCheckpoint.isColliding(this.x, this.y, this.xSize, this.ySize);
+    }
+
 
     // User input methods
     turnLeft() { this.turningLeft = true; }
