@@ -26,6 +26,16 @@ main {
     width: 95%;
 }
 
+button {
+    margin: 20px;
+    padding: 10px;
+    font-size: 200%;
+}
+
+p {
+    margin: 10px;
+}
+
 
 #menu-container {
     display: flex;
@@ -56,10 +66,29 @@ main {
     font-weight: 1000;
 }
 
-button {
+#play-btn {
+    margin-bottom: 100px;
+}
+
+
+#gameover-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+h2 {
+    font-size: 400%;
     margin: 20px;
-    padding: 10px;
-    font-size: 200%;
+    margin-top: 60px;
+}
+
+h3 {
+    font-size: 300%;
+    margin: 20px;
+    margin-bottom: 80px;
 }
 
 
@@ -78,7 +107,6 @@ button {
 
 #canvas { 
     background-color:white;
-    /* border: solid red 5px; */
     position: absolute;
     left: 0;
     right: 0;
@@ -90,7 +118,7 @@ button {
     position: absolute;
     text-align: center;
     color: rgb(255, 255, 190);
-    font-size: min(500%, 10vw, 15vh);
+    font-size: min(400%, 8vw, 12vh);
     font-weight: bold;
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: black;

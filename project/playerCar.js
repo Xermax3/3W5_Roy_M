@@ -9,8 +9,15 @@ class PlayerCar {
             this.WIDTH = 15;
             this.LENGTH = 30;
 
-            this.audioVroom = null;
+            this.arrowImg = new Image();
+            this.arrowImg.src = 'Images/Arrow.png';
+            this.ARROW_SIZE = 40;
+            this.ARROW_GAP = 80;
+
+            this.audioVroom = new Audio();
+            this.audioVroom.src = 'Audio/Vroom.ogg';
             this.AUDIO_VOLUME_CAP = 0.25;
+            this.playVroom();
 
             this.SPEED_UNIT_IN_KMH = 20;
 
@@ -24,7 +31,7 @@ class PlayerCar {
             this.STOP_ACCELERATION_RATE = -0.00550;
 
             // How much the car turns per rotation input (in angles).
-            this.ROTATION_RATE = 5;
+            this.ROTATION_RATE = 2.5;
 
             // How much the car slows down when turning. Should be > GO_ACC to have an effect.
             this.ROTATION_ACCELERATION_RATE = -0.00205;
@@ -48,6 +55,9 @@ class PlayerCar {
             // For checkpoints
             this.nextCheckpoint;
 
+            // For arrow
+            this.arrowRotation = 0;
+
             // For controls
             this.canMove = false;
             this.goingForward = false;
@@ -64,6 +74,15 @@ class PlayerCar {
             this.context.drawImage(this.image, this.x - (this.WIDTH / 2), this.y - (this.LENGTH / 2), this.WIDTH, this.LENGTH);
             this.context.restore();
         }
+        if (this.arrowImg.complete) {
+            this.context.save();
+            this.context.translate(this.x, this.y - this.ARROW_GAP);
+            this.context.rotate(this.arrowRotation);
+            this.context.translate(-this.x, -this.y + this.ARROW_GAP);
+            this.context.drawImage(this.arrowImg, this.x - (this.ARROW_SIZE / 2), 
+                this.y - this.ARROW_GAP - (this.ARROW_SIZE / 2), this.ARROW_SIZE, this.ARROW_SIZE);
+            this.context.restore();
+        }
     }
 
     update() {
@@ -74,6 +93,7 @@ class PlayerCar {
         this.updatePosition();
         this.checkWalls();
         this.checkMapEdges();
+        this.updateArrow();
         this.updateVroom();
         this.draw();
     }
@@ -95,7 +115,7 @@ class PlayerCar {
                 //console.log("Good to go");
                 this.acceleration += this.GO_ACCELERATION_RATE;
             } else {
-                //console.log("Cap reach -> stop acceleration");
+                //console.log("Cap reached -> stop acceleration");
                 this.acceleration = 0;
             }
             if (this.speed > this.ROTATION_SPEED_CAP && (this.turningLeft || this.turningRight)) {
@@ -169,6 +189,10 @@ class PlayerCar {
         }
     }
 
+    updateArrow() {
+        this.arrowRotation = Math.atan2(this.nextCheckpoint.y - this.y + 50, this.nextCheckpoint.x - this.x);
+    }
+
     updateVroom() {
         if (this.audioVroom) {
             this.audioVroom.volume = this.AUDIO_VOLUME_CAP * (this.speed / this.SPEED_CAP);
@@ -178,8 +202,6 @@ class PlayerCar {
     playVroom() {
         // Audio - Done using Web Audio API (makes looping sounds more seamless)
         let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        this.audioVroom = new Audio();
-        this.audioVroom.src = 'Audio/Vroom.ogg';
         let audioSource = audioContext.createMediaElementSource(this.audioVroom);
         let audioAnalyser = audioContext.createAnalyser();
         audioSource.connect(audioAnalyser);
@@ -195,7 +217,7 @@ class PlayerCar {
 
 
     reachedCheckpoint() {
-        return this.nextCheckpoint.isColliding(this.x, this.y, this.xSize, this.ySize);
+        return this.nextCheckpoint.isColliding(this.x, this.y);
     }
 
 

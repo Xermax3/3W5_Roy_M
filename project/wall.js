@@ -83,7 +83,7 @@ class Wall {
                 }
                 return y;
             default:
-                if (this.rotation == 0) {
+                // if (this.rotation == 0) {
                     if (x > this.x - (this.WIDTH / 2) && x < this.x + (this.WIDTH / 2)) {
                         if (y < this.y && y > this.y - (this.LENGTH / 2) - ySize - (xSize / 2)) {
                             return this.y - (this.LENGTH / 2) - ySize - (xSize / 2);
@@ -91,9 +91,9 @@ class Wall {
                             return this.y + (this.LENGTH / 2) + ySize + (xSize / 2);
                         }
                     }
-                } else {
+                // } else {
 
-                }
+                // }
                 return y;
         }
     }
